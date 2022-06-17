@@ -6,14 +6,12 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
-import warnings
 
 from keras.preprocessing import sequence
 from keras import optimizers
 from keras.utils import np_utils
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout, Activation, Embedding, SimpleRNN, BatchNormalization
-from keras.models import model_from_json
 
 #load the csv file containing the column names 
 column_name = pd.read_csv("field_names.csv", header = None)
@@ -30,11 +28,11 @@ test_data = pd.read_csv('KDDTest+.txt', names = new_columns)
 
 #Print of training dataset
 print("The training data is")
-train_data.tail()
+print(train_data.tail())
 
 #Print of testing dataset
 print("The testing data is")
-test_data.head()
+print(test_data.head())
 
 #Output total rows and columns of dataframes
 print(f"The shape of the training dataframe is : {train_data.shape}")
@@ -48,12 +46,9 @@ map_attacks = {k:v for (k,v) in map_attacks}
 train_data['class'] = train_data['class'].replace(map_attacks)
 test_data['class'] = test_data['class'].replace(map_attacks)
 
-#Print the class column values in training dataframe
-print(train_data['class'])
-
 train_data = shuffle(train_data)
 
-#separate the training dataframe into feature columns and label columns
+#Separate the training dataframe into feature columns and label columns
 X = train_data.drop('class', axis = 1) #Independent features
 y = train_data['class'] #Dependent features (Labels)
 
@@ -72,11 +67,14 @@ sc.fit(np.array(X_train))
 X_train = sc.transform(X_train)
 X_test = sc.transform(X_test)
 
+#Resize the data to fit the model
+X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], 1)
+X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
+
 #Creation of the model
 model = Sequential()
-model.add(LSTM(units = 128))
-model.add(Dropout(0.2))
-model.add(Dense(5, activation="softmax"))
+model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2, input_shape=(120, 1)))
+model.add(Dense(5, activation='softmax'))
 
 #Summary of model architecture 
 model.summary()
