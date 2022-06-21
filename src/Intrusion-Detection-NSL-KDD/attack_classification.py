@@ -34,7 +34,7 @@ print(train_data.tail())
 print("The testing data is")
 print(test_data.head())
 
-#Output total rows and columns of dataframes
+#Print total rows and columns of dataframes
 print(f"The shape of the training dataframe is : {train_data.shape}")
 print(f"The shape of the testing dataframe is : {test_data.shape}")
 
