@@ -1,4 +1,5 @@
 import pickle
+from tkinter.tix import WINDOW
 import numpy as np
 import os
 
@@ -9,6 +10,8 @@ from keras.models import Sequential, load_model
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical, plot_model
+
+WINDOW_SIZE = 4
 
 #Load the data file
 file = open("pg3456.txt", "r", encoding = "utf8")
@@ -49,8 +52,8 @@ print("\nVocab size: ", vocab_size)
 
 sequences = []
 
-for i in range(3, len(sequence_data)):
-    words = sequence_data[i-3:i+1]
+for i in range(WINDOW_SIZE, len(sequence_data)):
+    words = sequence_data[i-WINDOW_SIZE:i+1]
     sequences.append(words)
     
 print("The Length of sequences are: ", len(sequences))
@@ -75,7 +78,6 @@ print("\nClass:,", y[:5])
 #Creating the model
 model = Sequential()
 model.add(Embedding(vocab_size, 10, input_length=3))
-model.add(LSTM(1000, return_sequences=True))
 model.add(LSTM(1000))
 model.add(Dense(1000, activation="relu"))
 model.add(Dense(vocab_size, activation="softmax"))
@@ -87,5 +89,5 @@ plot_model(model, to_file='plot.png', show_layer_names=True)
 #Train the model with callback
 checkpoint = ModelCheckpoint("next_words.h5", monitor='loss', verbose=1, save_best_only=True)
 model.compile(loss="categorical_crossentropy", optimizer=Adam(learning_rate=0.001))
-model.fit(X, y, epochs=70, batch_size=64, callbacks=[checkpoint])
+model.fit(X, y, epochs=50, batch_size=64, callbacks=[checkpoint])
 
