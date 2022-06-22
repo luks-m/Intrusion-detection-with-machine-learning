@@ -34,7 +34,7 @@ while(True):
     else:
         try:
             text = text.split(" ")
-            text = text[-WINDOW_SIZE:]
+            text = text[-3:]
             print(text)
         
             Predict_Next_Words(model, tokenizer, text)
