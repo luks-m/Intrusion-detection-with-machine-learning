@@ -15,7 +15,7 @@ WINDOW_SIZE = 4
 NB_LINE_MAX = 500
 
 #Load the data file
-file = open("pg3456.txt", "r", encoding = "utf8")
+file = open("short-text.txt", "r", encoding = "utf8")
 
 #Store file in list
 lines = []
@@ -95,5 +95,5 @@ plot_model(model, to_file='plot.png', show_layer_names=True)
 #Train the model with callback
 checkpoint = ModelCheckpoint("next_words.h5", monitor='loss', verbose=1, save_best_only=True)
 model.compile(loss="categorical_crossentropy", optimizer=Adam(learning_rate=0.001))
-model.fit(X, y, epochs=10, batch_size=64, callbacks=[checkpoint])
+model.fit(X, y, epochs=30, batch_size=64, callbacks=[checkpoint])
 
