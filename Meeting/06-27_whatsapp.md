@@ -55,6 +55,35 @@ MAINIP=192.168.2.82
 MNIC_IP=
 ```
 
-MNIC_IP 
+Problème lié à la management IP. Lors de l'installation, on ne peut pas lui passer la nouvelle interface configurée. On lui donne donc ep3s0f1. Sauf que celle ci ne respecte pas les règles de configuration de l'interface réseau. Je vais modifier la configurations de eth10 afin de respecter les configurations nécessaires.
 
-#### Vecteurs d'embedding
+```bash
+2022-06-28T15:47:04Z | I | Executing command: ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: enp3s0f1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
+    link/ether 70:8b:cd:12:9f:dd brd ff:ff:ff:ff:ff:ff
+3: wlp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 48:45:20:d6:79:05 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.2.82/24 brd 192.168.2.255 scope global dynamic noprefixroute wlp2s0
+       valid_lft 257593sec preferred_lft 257593sec
+4: eth10: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether 3a:64:d8:ca:7a:af brd ff:ff:ff:ff:ff:ff
+    inet 192.168.100.199/24 brd 192.168.100.255 scope global eth10:0
+       valid_lft forever preferred_lft forever
+Beginning Security Onion network install
+Setup is running on TTY /dev/pts/0
+2022-06-28T15:47:12Z | I | Disabling ipv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+ERROR: Could not determine MAINIP or MNIC_IP.
+MAINIP=192.168.2.82
+MNIC_IP=
+```
+
+```bash
+The IP being routed by Linux is not the IP address assigned to the management interface (eth10).
+This is not a supported configuration, please remediate and rerun setup.
+```
