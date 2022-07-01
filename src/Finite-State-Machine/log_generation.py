@@ -49,3 +49,18 @@ print("Génération de {} logs\n".format(len(logs)))
 for log in logs :
     print("Longueur du log : {}".format(len(log)))
     print("Log : {}\n".format(log))
+print(logs)
+
+def reformate(logs) :
+    new_logs = []
+    for log in logs :
+        entry = []
+        out = []
+        for i in range(len(log)) :
+            entry.append(log[i][1])
+            out.append(log[i][2])
+        new_logs.append([entry, out])
+    return new_logs
+
+new_logs = reformate(logs)
+print(new_logs)
