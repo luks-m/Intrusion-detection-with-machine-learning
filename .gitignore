@@ -6,6 +6,9 @@ __pycache__/
 .Python
 
 #build files
-src/word_prediction/*.png
-src/word_prediction/*.pkl
-src/word_prediction/*.h5
+src/*/*.png
+src/*/*.pkl
+src/*/*.h5
+
+#imgage files
+img

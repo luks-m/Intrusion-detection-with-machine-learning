@@ -1,3 +1,4 @@
+from genericpath import exists
 import finite_state_transducer as fst
 import random
 
@@ -19,13 +20,12 @@ print(state_machine)
 state_machine.add_transition({'init_state': 'q3', 'input': 'b', 'output': '0', 'next_state': 'q0'})
 print(state_machine)
 
-LOG_LENGTH_MIN = 1
-LOG_LENGTH_MAX = 10
+LOG_LENGTH_MIN = 10
+LOG_LENGTH_MAX = 50
 
-def get_log(state_machine) :
+def get_log(state_machine, length=random.randint(LOG_LENGTH_MIN, LOG_LENGTH_MAX)) :
     log = []
     state = state_machine.initial_state
-    length = random.randint(LOG_LENGTH_MIN, LOG_LENGTH_MAX)
 
     for i in range(length) :
         input = random.choice(state_machine.inputs)
@@ -36,31 +36,32 @@ def get_log(state_machine) :
             break
     return log
 
-def logs_generator(state_machine, n) :
+def logs_generator(state_machine, n, length=random.randint(LOG_LENGTH_MIN, LOG_LENGTH_MAX)) :
     logs = []
     for i in range(n) :
-        logs.append(get_log(state_machine))
+        logs.append(get_log(state_machine, length))
     return logs
 
-logs = logs_generator(state_machine, 10)
-
-print()
-print("Génération de {} logs\n".format(len(logs)))
-for log in logs :
-    print("Longueur du log : {}".format(len(log)))
-    print("Log : {}\n".format(log))
-print(logs)
-
 def reformate(logs) :
-    new_logs = []
-    for log in logs :
-        entry = []
-        out = []
-        for i in range(len(log)) :
-            entry.append(log[i][1])
-            out.append(log[i][2])
-        new_logs.append([entry, out])
-    return new_logs
+        new_logs = []
+        for log in logs :
+            entry = []
+            out = []
+            for i in range(len(log)) :
+                entry.append(log[i][1])
+                out.append(log[i][2])
+            new_logs.append([entry, out])
+        return new_logs
 
-new_logs = reformate(logs)
-print(new_logs)
+if __name__=="__main__":
+    logs = logs_generator(state_machine, 10)
+
+    print()
+    print("Génération de {} logs\n".format(len(logs)))
+    for log in logs :
+        print("Longueur du log : {}".format(len(log)))
+        print("Log : {}\n".format(log))
+    print(logs)
+
+    new_logs = reformate(logs)
+    print(new_logs)
