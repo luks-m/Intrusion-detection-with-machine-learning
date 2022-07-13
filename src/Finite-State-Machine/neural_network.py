@@ -1,5 +1,5 @@
 import numpy as np
-
+import pickle
 from keras.layers import LSTM, Dense
 from keras.models import Sequential
 
@@ -53,4 +53,7 @@ if __name__=="__main__":
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=30, batch_size=32, callbacks=[checkpoint])
 
-
+    #Analyse the model history
+    file = open("history.txt", "wb") 
+    pickle.dump(history, file)
+    file.close
