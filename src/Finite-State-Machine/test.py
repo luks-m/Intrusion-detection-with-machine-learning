@@ -1,28 +1,14 @@
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 import numpy as np
 import pickle
 from neural_network import LOG_SIZE
+import utils
 
-def vector_to_binary(vector) :
-    binary = []
-    for i in range(len(vector)) :
-        if vector[i] > 0.5 :
-            binary.append(1)
-        else :
-            binary.append(0)
-    return np.array(binary)
-
-def predict_output(model, input) :
-        input = np.zeros((len(input)))
-        for i in range(len(input)) :
-            if input[i] == 'a' :
-                input[i] = 0.25
-            else :
-                input[i] = 0.75
+def predict_output(model, entry) :
+        input = utils.one_hot_encoder(entry, 2)
         tmp = [input]
         tmp = np.array(tmp)
         pred = model.predict(tmp)
-        pred = vector_to_binary(pred[0])
 
         print(pred)
         return pred
@@ -46,7 +32,9 @@ if __name__=="__main__":
                 if len(entry) != LOG_SIZE :
                     raise ValueError("Invalid input. Please enter the input in the format \"a b b b a ... a b a\" (x{})".format(LOG_SIZE))
             
-                predict_output(model, entry)
+                pred = predict_output(model, entry)
+
+                print("Results of prediction : {}".format(utils.get_results(pred)))
                 
             except Exception as e:
                 print("Error occurred: ",e)

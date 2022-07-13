@@ -20,8 +20,8 @@ print(state_machine)
 state_machine.add_transition({'init_state': 'q3', 'input': 'b', 'output': '0', 'next_state': 'q0'})
 print(state_machine)
 
-LOG_LENGTH_MIN = 10
-LOG_LENGTH_MAX = 50
+LOG_LENGTH_MIN = 5
+LOG_LENGTH_MAX = 15
 
 def get_log(state_machine, length=random.randint(LOG_LENGTH_MIN, LOG_LENGTH_MAX)) :
     log = []
