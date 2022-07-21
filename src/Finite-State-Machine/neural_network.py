@@ -11,8 +11,8 @@ from log_generation import logs_generator, reformate, state_machine
 
 import utils
 
-NB_LOGS = 1000
-LOG_SIZE = 20
+NB_LOGS = 10000
+LOG_SIZE = 30
 
 if __name__=="__main__":
     #get logs
@@ -38,22 +38,21 @@ if __name__=="__main__":
     y_train = new_y[:int(len(y) * 0.8)]
     y_test = new_y[int(len(y) * 0.8):]
 
-
     #creating the model
     model = Sequential()
-    model.add(LSTM(1000, input_shape=(X_train.shape[1], 2), return_sequences=True))
+    model.add(LSTM(1000, input_shape=(LOG_SIZE, 2), return_sequences=True))
     model.add(Dense(2, activation='softmax'))
 
     model.summary()
 
     plot_model(model, to_file='plot.png', show_layer_names=True)
 
-    #Train the model with callback
-    checkpoint = ModelCheckpoint("saved_model.h5", monitor='loss', verbose=1, save_best_only=True)
+    #compile the model with callbacks
+    checkpoint = ModelCheckpoint('saved_model.h5', monitor='val_loss', verbose=1, save_best_only=True)
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=30, batch_size=32, callbacks=[checkpoint])
+    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3, batch_size=50, callbacks=[checkpoint])
 
     #Analyse the model history
-    file = open("history.txt", "wb") 
+    file = open("history.txt", "wb")
     pickle.dump(history, file)
     file.close

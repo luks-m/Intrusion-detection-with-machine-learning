@@ -1,18 +1,16 @@
 import pickle
-from tkinter.tix import WINDOW
 import numpy as np
-import os
 
 from keras.preprocessing.text import Tokenizer
 from keras.layers import Embedding, LSTM, Dense
-from keras.models import Sequential, load_model
+from keras.models import Sequential
 
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical, plot_model
 
 WINDOW_SIZE = 4
-NB_LINE_MAX = 500
+NB_LINE_MAX = 10000
 
 #Load the data file
 file = open("short-text.txt", "r", encoding = "utf8")
