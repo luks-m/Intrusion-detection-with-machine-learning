@@ -11,7 +11,7 @@ class FiniteStateTransducer :
         return "FiniteStateTransducer(\n\
             states={}\n\
             inputs={}\n\
-            outputs{}\n\
+            outputs={}\n\
             transitions={}\n\
             initial_state={}\n\
             final_states={})".format(self.states, self.inputs, self.outputs, self.transitions, self.initial_state, self.final_states)
@@ -112,6 +112,13 @@ class FiniteStateTransducer :
         else :
             self.final_states.remove(state)
 
-    
+    def get_current_inputs(self, state) :
+        inputs = []
+        for input in self.inputs :
+            if input in self.transitions[state] :
+                inputs.append(input)
+        return inputs
 
-    
+    def is_final_state(self, state) :
+        return state in self.final_states
+

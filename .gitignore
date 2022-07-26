@@ -12,3 +12,6 @@ src/*/*.h5
 
 #imgage files
 img
+
+#json
+*.json
