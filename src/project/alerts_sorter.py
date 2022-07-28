@@ -11,7 +11,7 @@ final_states=['q1']
 outputs=[]
 
 transitions =  {'q0': {'a0': {'next_state': 'q1'}, 'a1': {'next_state': 'q0'}, 'a2': {'next_state': 'q0'}, 'a3': {'next_state': 'q0'}, 'a4': {'next_state': 'q0'}},
-                'q1': {'a0': {'next_state': 'q1'}, 'a1': {'next_state': 'q0'}, 'a2': {'next_state': 'q0'}, 'a3': {'next_state': 'q0'}, 'a4': {'next_state': 'q0'}}}
+                'q1': {'a0': {'next_state': 'q0'}, 'a1': {'next_state': 'q0'}, 'a2': {'next_state': 'q1'}, 'a3': {'next_state': 'q1'}, 'a4': {'next_state': 'q1'}}}
 
 state_machine = fst.FiniteStateTransducer(states, inputs, outputs, transitions, initial_state, final_states)
 print(state_machine)

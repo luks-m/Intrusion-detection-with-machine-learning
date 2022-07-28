@@ -8,7 +8,7 @@ NB_STATES = 5
 NB_INPUTS = 5
 
 LOG_LENGTH = 5
-NB_LOGS = 50
+NB_LOGS = 10000
 
 #100 states
 states = []
