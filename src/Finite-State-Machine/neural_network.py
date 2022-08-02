@@ -4,10 +4,10 @@ from keras.layers import LSTM, Dense
 from keras.models import Sequential
 
 from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import plot_model
 
 from log_generation import logs_generator, reformate, state_machine
+import callback
 
 import utils
 
@@ -47,10 +47,13 @@ if __name__=="__main__":
 
     plot_model(model, to_file='plot.png', show_layer_names=True)
 
-    #compile the model with callbacks
+    #Creating callback
+    weight_callback = callback.WeightCallback(model, "logs/weights_values.txt")
     checkpoint = ModelCheckpoint('saved_model.h5', monitor='val_loss', verbose=1, save_best_only=True)
+
+    #Compile the model
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=3, batch_size=50, callbacks=[checkpoint])
+    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=5, batch_size=50, callbacks=[checkpoint, weight_callback])
 
     #Analyse the model history
     file = open("history.txt", "wb")
