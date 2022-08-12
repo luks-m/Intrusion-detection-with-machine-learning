@@ -1,23 +1,36 @@
 import numpy as np
-import pickle
-from keras.layers import LSTM, Dense
+from pickle import *
+import sys
+import tensorflow as tf
+from keras.layers import LSTM, Dense, LSTMCell, RNN
 from keras.models import Sequential
 
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.utils import plot_model
 
-from log_generation import logs_generator, reformate, state_machine
-import callback
+#import callback
 
 import utils
 
 NB_LOGS = 10000
+NB_HIDDEN_NEURONS = 1000
+NB_EPOCHS= 10
 LOG_SIZE = 30
+
+argc = len(sys.argv)
+if argc != 3:
+    print("Default NB_HIDDEN_NEURONS = 1000")
+    print("Default NB_EPOCHS = 10")
+else :
+    NB_HIDDEN_NEURONS = int(sys.argv[1])
+    NB_EPOCHS = int(sys.argv[2])
+    print("NB_HIDDEN_NEURONS = {}".format(NB_HIDDEN_NEURONS))
+    print("NB_EPOCHS = {}".format(NB_EPOCHS))
 
 if __name__=="__main__":
     #get logs
-    data = logs_generator(state_machine, NB_LOGS, LOG_SIZE)
-    data = reformate(data)
+    f = open("data_saved.txt", "rb")
+    data = load(f)
 
     #creating data with inputs and outputs
     X = []
@@ -40,7 +53,7 @@ if __name__=="__main__":
 
     #creating the model
     model = Sequential()
-    model.add(LSTM(1000, input_shape=(LOG_SIZE, 2), return_sequences=True))
+    model.add(RNN(LSTMCell(NB_HIDDEN_NEURONS), input_shape=(LOG_SIZE, 2), return_sequences=True))
     model.add(Dense(2, activation='softmax'))
 
     model.summary()
@@ -48,14 +61,14 @@ if __name__=="__main__":
     plot_model(model, to_file='plot.png', show_layer_names=True)
 
     #Creating callback
-    weight_callback = callback.WeightCallback(model, "logs/weights_values.txt")
+    #weight_callback = callback.WeightCallback(model, "logs/weights_values.txt")
     checkpoint = ModelCheckpoint('saved_model.h5', monitor='val_loss', verbose=1, save_best_only=True)
 
     #Compile the model
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=5, batch_size=50, callbacks=[checkpoint, weight_callback])
+    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=NB_EPOCHS, batch_size=50, callbacks=[checkpoint])
 
     #Analyse the model history
     file = open("history.txt", "wb")
-    pickle.dump(history, file)
+    dump(history, file)
     file.close

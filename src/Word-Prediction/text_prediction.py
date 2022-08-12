@@ -13,7 +13,7 @@ WINDOW_SIZE = 4
 NB_LINE_MAX = 10000
 
 #Load the data file
-file = open("short-text.txt", "r", encoding = "utf8")
+file = open("pg3456.txt", "r", encoding = "utf8")
 
 #Store file in list
 lines = []

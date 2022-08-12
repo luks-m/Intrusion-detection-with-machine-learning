@@ -1,6 +1,7 @@
 from genericpath import exists
 import finite_state_transducer as fst
 import random
+from pickle import *
 
 states = ['q0', 'q1', 'q2', 'q3']
 initial_state = 'q0'
@@ -65,3 +66,12 @@ if __name__=="__main__":
 
     new_logs = reformate(logs)
     print(new_logs)
+
+    #get logs
+    data = logs_generator(state_machine, 10000, 30)
+    data = reformate(data)
+
+    #save data
+    f = open("data.txt", "wb")
+    dump(data, f)
+    f.close
