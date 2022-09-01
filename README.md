@@ -44,6 +44,7 @@ Then, use this command to test it :
 ```bash
 $ python3 newt_word.py
 ```
+You have to enter 4 words in order to predict the fifth one.
 
 ### Learning finite state machine
 To execute the text prediction, go to `src/Finite-State-Machine` folder.   

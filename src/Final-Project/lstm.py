@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     #Model LSTM
     model = Sequential()
-    model.add(LSTM(2, input_shape=(LOG_LENGTH, gen.NB_INPUTS)))
+    model.add(LSTM(1, input_shape=(LOG_LENGTH, gen.NB_INPUTS)))
     model.add(Dense(2, activation='softmax'))
 
     model.summary()
