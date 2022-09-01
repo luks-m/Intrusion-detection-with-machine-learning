@@ -1,26 +1,23 @@
 import numpy as np
 from pickle import *
 import sys
-import tensorflow as tf
-from keras.layers import LSTM, Dense, LSTMCell, RNN
+from keras.layers import Dense, LSTMCell, RNN
 from keras.models import Sequential
 
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.utils import plot_model
 
-#import callback
-
 import utils
 
 NB_LOGS = 10000
-NB_HIDDEN_NEURONS = 1000
-NB_EPOCHS= 10
+NB_HIDDEN_NEURONS = 2
+NB_EPOCHS= 100
 LOG_SIZE = 30
 
 argc = len(sys.argv)
 if argc != 3:
-    print("Default NB_HIDDEN_NEURONS = 1000")
-    print("Default NB_EPOCHS = 10")
+    print("Default NB_HIDDEN_NEURONS = 2")
+    print("Default NB_EPOCHS = 100")
 else :
     NB_HIDDEN_NEURONS = int(sys.argv[1])
     NB_EPOCHS = int(sys.argv[2])
@@ -29,7 +26,7 @@ else :
 
 if __name__=="__main__":
     #get logs
-    f = open("data_saved.txt", "rb")
+    f = open("data.txt", "rb")
     data = load(f)
 
     #creating data with inputs and outputs
@@ -61,7 +58,6 @@ if __name__=="__main__":
     plot_model(model, to_file='plot.png', show_layer_names=True)
 
     #Creating callback
-    #weight_callback = callback.WeightCallback(model, "logs/weights_values.txt")
     checkpoint = ModelCheckpoint('saved_model.h5', monitor='val_loss', verbose=1, save_best_only=True)
 
     #Compile the model

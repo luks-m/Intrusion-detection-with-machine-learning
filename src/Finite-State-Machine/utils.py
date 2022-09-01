@@ -3,7 +3,6 @@ import numpy as np
 #Get one hot encoding of a given input
 def one_hot_encoder(X, n_classes):
     encoded = np.zeros((len(X), n_classes))
-
     for i in range(len(X)):
         if X[i] == 'a':
             encoded[i][0] = 1
