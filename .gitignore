@@ -13,5 +13,8 @@ src/*/*.h5
 #imgage files
 img
 
+#meeting notes file
+Meeting
+
 #json
 *.json
